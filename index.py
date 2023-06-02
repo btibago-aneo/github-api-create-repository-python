@@ -66,7 +66,8 @@ def create_github_pages(username, repository_name, token) -> None:
     url = f"https://api.github.com/repos/{username}/{repository_name}/pages"
     headers = {
     "Authorization": f"Bearer {token}",
-    "Accept": "application/vnd.github.switcheroo-preview+json"
+    "Accept": "application/vnd.github.switcheroo-preview+json",
+    'X-GitHub-Api-Version': '2022-11-28'
     }
     payload = {
     "source": {
@@ -74,10 +75,9 @@ def create_github_pages(username, repository_name, token) -> None:
         "path": "/"
         }
     }
-    payload = json.dumps(payload)
     response = requests.post(url, json=payload, headers=headers)
 
-    if response.status_code == 202:
+    if response.status_code == 201:
         print("GitHub Page created successfully!")
     else:
         print(f"Failed to create GitHub Page: {response.text}")
